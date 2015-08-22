@@ -12,9 +12,10 @@ import ru.myitschool.ufodestroyer.model.entities.GameObject;
  * Игровая модель хранит все игровые объекты и отвечает за расчет их новых
  * позиций, столкновений. Предоставляет оповещения о происходящих событиях.
  *
- * Размеры игрового поля должны быть установлены с помощью метода setGameFieldSize до начала
- * самой игры. Нижняя сторона игрового поля совпадает с осью x (направленной вправо), а ось y
- * направлена вверх из середины экрана.
+ * Ширина игрового поля равна 20 единицам (константа {@link #FIELD_WIDTH}). Высота игрового поля зависит
+ * от соотношения сторон устройства и должна быть установлена путем вызова метода
+ * {@link #setFieldWidthHeightRatio} до начала самой игры. Нижняя сторона игрового поля совпадает
+ * с осью x (направленной вправо), а ось y направлена вверх из середины игрового поля.
  *
  * <pre>
  *
@@ -26,10 +27,17 @@ import ru.myitschool.ufodestroyer.model.entities.GameObject;
  *     |          |          |
  *     |          |          |
  *     -----------+----------|-------→ (x)
- *              (0,0)
+ * (-10,0)      (0,0)     (10,0)
  * </pre>
  */
 public interface Game {
+    public static final float FIELD_WIDTH = 20f;
+
+    public static final float ENEMY_WIDTH = 2f;
+    public static final float ENEMY_HEIGHT = 0.52532f;
+
+
+
     /**
      * События, о которых игровая модель оповещает всех заинтересованные стороны
      */
@@ -61,21 +69,12 @@ public interface Game {
     public void removeEventListener(EventListener listener);
 
     /**
-     * @return Ширину игрового поля, в пикселях
+     * Задает соотношение сторон игрового поля. Числа width и height должны относится также,
+     * как относятся по размеру стороны игрового поля для правильного расчета игры
+     * @param width ширина поля, в любых единицах измерения (одинаковых для width и height)
+     * @param height высота поля, в любых единицах измерения (одинаковых для width и height)
      */
-    float getGameFieldWidth();
-
-    /**
-     * @return Высоту игрового поля, в пикселях
-     */
-    float getGameFieldHeight();
-
-    /**
-     * Задает размеры игрового поля, в пикселях
-     * @param width ширина
-     * @param height высота
-     */
-    void setGameFieldSize(float width, float height);
+    void setFieldWidthHeightRatio(float width, float height);
 
     /**
      * @return Список всех игровых объектов; не подлежит изменению

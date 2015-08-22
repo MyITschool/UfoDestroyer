@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "ru.myitschool.ufodestroyer"
-        minSdkVersion 15
-        targetSdkVersion 23
+        minSdkVersion 10
+        targetSdkVersion 10
         versionCode 1
         versionName "1.0"
     }

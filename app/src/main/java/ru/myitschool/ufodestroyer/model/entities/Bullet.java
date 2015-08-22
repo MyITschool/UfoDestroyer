@@ -5,7 +5,7 @@ package ru.myitschool.ufodestroyer.model.entities;
  */
 public class Bullet extends MovingGameObject {
     /**
-     * Сила гравитации, в пикселах на секунду в квадрате
+     * Сила гравитации, в единицах на секунду в квадрате (см. {@link ru.myitschool.ufodestroyer.model.Game}
      */
     private static final float GRAVITY = 9.8f;
 

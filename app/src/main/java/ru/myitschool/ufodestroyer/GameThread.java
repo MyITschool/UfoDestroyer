@@ -1,5 +1,8 @@
 package ru.myitschool.ufodestroyer;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,6 +11,7 @@ import android.view.SurfaceHolder;
 
 import ru.myitschool.ufodestroyer.model.Game;
 import ru.myitschool.ufodestroyer.renderer.GameRenderer;
+import ru.myitschool.ufodestroyer.renderer.Renderer;
 
 /**
  * Поток, отвечающий за отрисовку игры
@@ -21,11 +25,16 @@ public class GameThread extends Thread {
     private int lastFps = 0;
 
     private Game game;
+    private Resources resources;
+    private GameRenderer renderer;
 
-    public GameThread(Game game, SurfaceHolder surfaceHolder, float width, float height) {
+    public GameThread(Context context, Game game, SurfaceHolder surfaceHolder, int width, int height) {
         this.surfaceHolder = surfaceHolder;
         this.game = game;
-        game.setGameFieldSize(width, height);
+
+        resources = context.getResources();
+        renderer = new GameRenderer(game, resources);
+        updateSize(width, height);
     }
 
     /**
@@ -33,10 +42,11 @@ public class GameThread extends Thread {
      * @param width ширина в пикселях
      * @param height высота в пикселях
      */
-    public void updateSize(float width, float height) {
+    public void updateSize(int width, int height) {
         // чтобы ширина и высота менялись атомарно и не в середине расчетов/отрисовки
         synchronized (this) {
-            game.setGameFieldSize(width, height);
+            game.setFieldWidthHeightRatio(width, height);
+            renderer.setGameFieldSize(width, height);
         }
     }
 
@@ -51,7 +61,6 @@ public class GameThread extends Thread {
     @Override
     public void run() {
         try {
-            GameRenderer renderer = new GameRenderer(game);
             try {
                 while (running) {
                     long currentTime = System.currentTimeMillis();

@@ -8,43 +8,17 @@ import static java.lang.Math.*;
  * Класс врага
  */
 public class Enemy extends MovingGameObject {
-    private float rotateSpeed;
-    private PointF direction = new PointF();
-
-    /**
-     * @return Скорость поворота объекта, в радианах в секунду
-     */
-    public float getRotateSpeed() {
-        return rotateSpeed;
-    }
-
-    /**
-     * @return Направление, куда движется противник
-     */
-    public PointF getDirection() {
-        return direction;
-    }
-
-    /**
-     * Задает скорость поворота объекта
-     * @param rotateSpeed скорость поворота объекта, в радианах в секунду
-     */
-    public void setRotateSpeed(float rotateSpeed) {
-        this.rotateSpeed = rotateSpeed;
-    }
+    private static final float TIME_BETWEEN_DIRECTION_CHANGES = 1.3f;
+    private float timeSinceLastDirectionChange = 0;
 
     @Override
     protected void adjustVelocity(float elapsedSeconds) {
-        // общая логика:
-        // 1. Поворачиваем скорость на угол
-        // 2. Размер скорости меняется в зависимости от того, в каком направлении мы движемся
-        PointF v = getVelocity();
+        timeSinceLastDirectionChange += elapsedSeconds;
+        if (timeSinceLastDirectionChange > TIME_BETWEEN_DIRECTION_CHANGES) {
+            timeSinceLastDirectionChange -= TIME_BETWEEN_DIRECTION_CHANGES;
 
-        // поворот на некоторый угол
-        double angle = getRotateSpeed() * elapsedSeconds;
-        v.set((float) (v.x * cos(angle) - v.y * sin(angle)),
-                (float) (v.x * sin(angle) + v.y * cos(angle)));
-
-        v.set(v.x + direction.x * elapsedSeconds, v.y + direction.y * elapsedSeconds);
+            PointF v = getVelocity();
+            v.set(v.x, -v.y);
+        }
     }
 }

@@ -1,7 +1,5 @@
 package ru.myitschool.ufodestroyer.model;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -46,23 +44,12 @@ public class GameImpl implements Game {
 
     private List<EventListener> listeners = new ArrayList<>();
 
-    private float gameFieldWidth;
     private float gameFieldHeight;
+    private final float gameFieldWidth = 20;
 
     @Override
-    public float getGameFieldWidth() {
-        return gameFieldWidth;
-    }
-
-    @Override
-    public float getGameFieldHeight() {
-        return gameFieldHeight;
-    }
-
-    @Override
-    public void setGameFieldSize(float width, float height) {
-        gameFieldWidth = width;
-        gameFieldHeight = height;
+    public void setFieldWidthHeightRatio(float width, float height) {
+        gameFieldHeight = 20 * height / width;
     }
 
     @Override
@@ -146,17 +133,15 @@ public class GameImpl implements Game {
      */
     private void spawnEnemy() {
         Enemy enemy = new Enemy();
-        enemy.getCoords().set(-gameFieldWidth / 2,
-                (gameFieldHeight / 4) + random.nextFloat() * (gameFieldHeight / 2));
-        enemy.getSize().set(50f, 50f);
+        float direction = 1f;
         if (random.nextBoolean())
-            enemy.setRotateSpeed((float) (Math.PI / 2.5));
-        else
-            enemy.setRotateSpeed((float) (-Math.PI / 2.5));
+            direction = -1f;
+        enemy.getCoords().set(direction * gameFieldWidth / 2,
+                (gameFieldHeight / 4) + random.nextFloat() * (gameFieldHeight / 2));
+        enemy.getSize().set(ENEMY_WIDTH, ENEMY_HEIGHT);
 
-        float dirY = (random.nextFloat() - 0.5f) * 2f;
-        enemy.getDirection().set(6f, dirY * 6f);
-        enemy.getVelocity().set(3f, dirY * 3f);
+        float dirY = (random.nextFloat() - 0.5f) * 3f;
+        enemy.getVelocity().set( - direction * 3f, dirY * 0.5f);
 
         for (EventListener listener: listeners)
             listener.onEnemySpawned(enemy);

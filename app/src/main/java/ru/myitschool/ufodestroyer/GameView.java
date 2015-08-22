@@ -21,19 +21,22 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         this.game = game;
     }
 
-    private GameThread gameThread;
+    private GameThread gameThread = null;
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.d("GameView", "Surface created");
-        gameThread = new GameThread(game, holder, getWidth(), getHeight());
-        gameThread.start();
     }
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         Log.d("GameView", "Surface changed");
-        gameThread.updateSize(width, height);
+        if (gameThread == null) {
+            gameThread = new GameThread(getContext(), game, holder, width, height);
+            gameThread.start();
+        }
+        else
+            gameThread.updateSize(width, height);
     }
 
     @Override

@@ -30,6 +30,6 @@ public abstract class MovingGameObject extends GameObject {
      */
     public void update(float elapsedSeconds) {
         adjustVelocity(elapsedSeconds);
-        getCoords().offset(velocity.x, velocity.y);
+        getCoords().offset(velocity.x * elapsedSeconds, velocity.y * elapsedSeconds);
     }
 }

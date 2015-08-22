@@ -1,5 +1,7 @@
 package ru.myitschool.ufodestroyer.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -17,7 +19,7 @@ import ru.myitschool.ufodestroyer.model.util.Tools;
 /**
  * Класс, реализующий логику игры. Для подробного поисания см {@link Game}
  */
-public class GameImpl implements Game {
+public class GameImpl implements Game, PlayerControllerImpl.Owner {
     /**
      * Максимальное время, которое может пройти между обновлениями игровой модели;
      * Необходимо для того, чтобы быть уверенным, что проверка коллизий произойдет
@@ -31,8 +33,12 @@ public class GameImpl implements Game {
     private static final float SECONDS_BETWEEN_ENEMY_SPAWNS = 2.0f;
 
     private Player player = new Player();
+    private PlayerControllerImpl playerController = new PlayerControllerImpl(this);
+
     {
-        player.getSize().set(10.0f, 10.0f);
+        player.getSize().set(PLAYER_WIDTH, PLAYER_HEIGHT);
+        player.getCoords().set(0f, 0f);
+        player.setAngle(90f);
     }
 
 
@@ -70,13 +76,36 @@ public class GameImpl implements Game {
     }
 
     @Override
+    public Player getPlayer() {
+        return player;
+    }
+
+    /**
+     * Вызывается контроллером, когда нужно произвести выстрел
+     *
+     * @param power сила выстрела, 0 - самый слабый, 1 - самый сильный
+     */
+    @Override
+    public void shoot(float power) {
+        Log.d(GameImpl.class.getName(), "Shoot");
+    }
+
+    @Override
+    public PlayerController getPlayerController() {
+        return playerController;
+    }
+
+    @Override
     public void update(float elapsedSeconds) {
+        playerController.update(elapsedSeconds);
         while (elapsedSeconds > 0) {
             float tick;
             if (elapsedSeconds > MAX_SECONDS_BETWEEN_UPDATES)
                 tick = MAX_SECONDS_BETWEEN_UPDATES;
             else
                 tick = elapsedSeconds;
+
+            //player.setAngle(player.getAngle() + elapsedSeconds * 45f);
 
             calcPositions(tick);
             deleteOffMapObjects();

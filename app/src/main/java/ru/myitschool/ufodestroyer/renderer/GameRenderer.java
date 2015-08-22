@@ -13,6 +13,7 @@ import ru.myitschool.ufodestroyer.model.Game;
 import ru.myitschool.ufodestroyer.model.entities.Bullet;
 import ru.myitschool.ufodestroyer.model.entities.Enemy;
 import ru.myitschool.ufodestroyer.model.entities.GameObject;
+import ru.myitschool.ufodestroyer.model.entities.Player;
 
 /**
  * Класс, который отвечает за отрисовку игры
@@ -22,6 +23,7 @@ public class GameRenderer implements Game.EventListener {
     private Resources resources;
     private Bitmap background;
     private EnemyRenderer enemyRenderer;
+    private PlayerRenderer playerRenderer;
 
     /**
      * Создает новый экземпляр рендерера
@@ -51,7 +53,25 @@ public class GameRenderer implements Game.EventListener {
         Bitmap ufo = BitmapFactory.decodeResource(resources, R.drawable.ufo);
         enemyRenderer = new EnemyRenderer(ufo, width, height);
 
-        // TODO: остальные ресурсы
+        // игрок
+        Bitmap player = BitmapFactory.decodeResource(resources, R.drawable.player);
+        playerRenderer = new PlayerRenderer(player, width, height);
+
+        initRenderers();
+    }
+
+    /**
+     * Инициализирует и заменяет рендереры, отвечающие за отрисовку отдельных объектов
+     */
+    private void initRenderers() {
+        for (GameObject go: game.getGameObjects()) {
+            if (go instanceof Player)
+                go.setRenderingHelper(playerRenderer);
+            else if (go instanceof Enemy)
+                go.setRenderingHelper(enemyRenderer);
+            else
+                throw new IllegalStateException("Renderer does not know how to render object " + go.getClass().getName());
+        }
     }
 
     public void close() throws Exception {

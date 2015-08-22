@@ -5,6 +5,7 @@ import java.util.List;
 import ru.myitschool.ufodestroyer.model.entities.Bullet;
 import ru.myitschool.ufodestroyer.model.entities.Enemy;
 import ru.myitschool.ufodestroyer.model.entities.GameObject;
+import ru.myitschool.ufodestroyer.model.entities.Player;
 
 /**
  * Интерфейс для игровой модели. Сюда выделено всё, что об игровой модели нужно знать извне.
@@ -33,10 +34,37 @@ import ru.myitschool.ufodestroyer.model.entities.GameObject;
 public interface Game {
     public static final float FIELD_WIDTH = 20f;
 
+    // соотношение сторон в модели должно соответствовать размеру изображений
+    // иначе, выглядеть будет не очень
+    /**
+     * Ширина врага
+     */
     public static final float ENEMY_WIDTH = 2f;
+
+    /**
+     * Высота врага
+     */
     public static final float ENEMY_HEIGHT = 0.52532f;
 
+    /**
+     * Ширина игрока
+     */
+    public static final float PLAYER_WIDTH = 4f;
 
+    /**
+     * Высота игрока
+     */
+    public static final float PLAYER_HEIGHT = 1.16f;
+
+    /**
+     * Координата x центра игрока (точки, вокруг которой игрок поворачивается)
+     */
+    public static final float PLAYER_CENTER_X = 1.6f;
+
+    /**
+     * Координата y центра игрока (точки, вокруг которой игрок поворачивается)
+     */
+    public static final float PLAYER_CENTER_Y = 0.58f;
 
     /**
      * События, о которых игровая модель оповещает всех заинтересованные стороны
@@ -53,6 +81,29 @@ public interface Game {
          * @param enemy противник
          */
         void onEnemySpawned(Enemy enemy);
+    }
+
+    /**
+     * Интерфейс для управления игроком
+     */
+    interface PlayerController {
+        /**
+         * Задает цель игрока. Пушка игрока будет вращаться в этом направлении до тех пор, пока не будет
+         * вызван метод {@link #stopTargeting()} или пока пушка не будет смотреть в эту сторону. Если
+         * пушка и так смотрит в эту сторону, начинается зарядка пушки. Пушка выстрелит, если будет
+         * вызван метод {@link #stopTargeting()} в момент, когда пушка заряжена.
+         * @param x икс координата цели в игровой системе координат
+         * @param y игрек координата цели в игровой системе координат
+         */
+        void setTarget(float x, float y);
+
+        /**
+         * Прекращает прицеливание игроком. Если при вызове этого метода пушка имела заряд, будет
+         * произведен выстрел. Если пушка была в процессе поворота, пушка прекратит поворот (выстрела
+         * не произойдет). Повторный вызов этого метода без вызова {@link #setTarget(float, float)}
+         * ничего не делает.
+         */
+        void stopTargeting();
     }
 
     /**
@@ -82,8 +133,19 @@ public interface Game {
     List<GameObject> getGameObjects();
 
     /**
+     * @return Объект игрока
+     */
+    Player getPlayer();
+
+    /**
      * Рассчитывает новое состояние игры по прошествии указанного времени
      * @param elapsedSeconds количество секунд, которые должны пройти в игровом мире
      */
-    public void update(float elapsedSeconds);
+    void update(float elapsedSeconds);
+
+    /**
+     * Возвращает объект-контроллер, который позволяет управлять игроком в этой модели.
+     * @return объект контроллер для управления действиями игрока
+     */
+    PlayerController getPlayerController();
 }

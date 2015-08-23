@@ -24,6 +24,7 @@ public class GameRenderer implements Game.EventListener {
     private Bitmap background;
     private EnemyRenderer enemyRenderer;
     private PlayerRenderer playerRenderer;
+    private BulletRenderer bulletRenderer;
 
     /**
      * Создает новый экземпляр рендерера
@@ -57,6 +58,10 @@ public class GameRenderer implements Game.EventListener {
         Bitmap player = BitmapFactory.decodeResource(resources, R.drawable.player);
         playerRenderer = new PlayerRenderer(player, width, height);
 
+        // пуля
+        Bitmap bullet = BitmapFactory.decodeResource(resources, R.drawable.plasma);
+        bulletRenderer = new BulletRenderer(bullet, width, height);
+
         initRenderers();
     }
 
@@ -69,6 +74,8 @@ public class GameRenderer implements Game.EventListener {
                 go.setRenderingHelper(playerRenderer);
             else if (go instanceof Enemy)
                 go.setRenderingHelper(enemyRenderer);
+            else if (go instanceof Bullet)
+                go.setRenderingHelper(bulletRenderer);
             else
                 throw new IllegalStateException("Renderer does not know how to render object " + go.getClass().getName());
         }
@@ -102,7 +109,7 @@ public class GameRenderer implements Game.EventListener {
 
     @Override
     public void onBulletFired(Bullet bullet) {
-
+        bullet.setRenderingHelper(bulletRenderer);
     }
 
     @Override

@@ -1,10 +1,10 @@
 package ru.myitschool.ufodestroyer.model.util;
 
-import android.graphics.PointF;
 import android.graphics.RectF;
 
 import ru.myitschool.ufodestroyer.model.Game;
 import ru.myitschool.ufodestroyer.model.entities.HasCoordsAndSize;
+import ru.myitschool.ufodestroyer.model.math.Vector2F;
 
 /**
  * Вспомогательные методы
@@ -38,11 +38,11 @@ public class Tools {
      * @param height высота канвы для рисования
      * @return координаты точки на канве, которая соответствует точке point в игровой модели
      */
-    public static PointF gamePointToCanvasPoint(PointF point, float width, float height) {
+    public static Vector2F gamePointToCanvasPoint(Vector2F point, float width, float height) {
         float scalingFactor = width / Game.FIELD_WIDTH;
         float x = point.x * scalingFactor + (width / 2f);
         float y = height - scalingFactor * point.y;
-        return new PointF(x, y);
+        return new Vector2F(x, y);
     }
 
     /**
@@ -52,11 +52,11 @@ public class Tools {
      * @param height высота канвы для рисования
      * @return координаты точки в игровой модели, которая соответствует точке point на канве
      */
-    public static PointF canvasPointToGamePoint(PointF point, float width, float height) {
+    public static Vector2F canvasPointToGamePoint(Vector2F point, float width, float height) {
         float scalingFactor = width / Game.FIELD_WIDTH;
         float x = (point.x - (width / 2f)) / scalingFactor;
         float y = (height - point.y) / scalingFactor;
-        return new PointF(x, y);
+        return new Vector2F(x, y);
     }
 
     /**

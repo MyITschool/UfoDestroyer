@@ -12,16 +12,16 @@ import ru.myitschool.ufodestroyer.model.util.Tools;
 import static ru.myitschool.ufodestroyer.model.util.Tools.gamePointToCanvasPoint;
 
 /**
- * Класс, отвечающий за отрисовку врагов
+ * Отвечает за отрисовку пуль
  */
-public class EnemyRenderer implements Renderer {
+public class BulletRenderer implements Renderer {
     private final Bitmap bitmap;
     private final float pixelWidth;
     private final float pixelHeight;
 
-    public EnemyRenderer(Bitmap bitmap, float width, float height) {
-        pixelWidth = Math.round(Tools.gameSizeToCanvasSize(Game.ENEMY_WIDTH, width, height));
-        pixelHeight = Math.round(Tools.gameSizeToCanvasSize(Game.ENEMY_HEIGHT, width, height));
+    public BulletRenderer(Bitmap bitmap, float width, float height) {
+        pixelWidth = Math.round(Tools.gameSizeToCanvasSize(Game.BULLET_WIDTH, width, height));
+        pixelHeight = Math.round(Tools.gameSizeToCanvasSize(Game.BULLET_HEIGHT, width, height));
 
         this.bitmap = Bitmap.createScaledBitmap(bitmap, Math.round(pixelWidth), Math.round(pixelHeight), true);
     }
@@ -38,4 +38,5 @@ public class EnemyRenderer implements Renderer {
 
         canvas.drawBitmap(bitmap, point.x - pixelWidth / 2f, point.y - pixelHeight / 2f, paint);
     }
+
 }

@@ -8,6 +8,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import ru.myitschool.ufodestroyer.model.Game;
+import ru.myitschool.ufodestroyer.model.math.Vector2F;
 import ru.myitschool.ufodestroyer.model.util.Tools;
 
 /**
@@ -65,11 +66,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (surfaceWidth > 0 && surfaceHeight > 0) {
-            PointF point = new PointF(event.getX(), event.getY());
+            Vector2F point = new Vector2F(event.getX(), event.getY());
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                 case MotionEvent.ACTION_MOVE:
-                    PointF gameCoordsPoint =
+                    Vector2F gameCoordsPoint =
                             Tools.canvasPointToGamePoint(point, surfaceWidth, surfaceHeight);
                     game.getPlayerController().setTarget(gameCoordsPoint.x, gameCoordsPoint.y);
                     return true;

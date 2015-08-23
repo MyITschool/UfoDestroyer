@@ -47,24 +47,39 @@ public interface Game {
     public static final float ENEMY_HEIGHT = 0.52532f;
 
     /**
+     * Ширина врага
+     */
+    public static final float BULLET_WIDTH = 0.6f;
+
+    /**
+     * Высота врага
+     */
+    public static final float BULLET_HEIGHT = 0.6f;
+
+    /**
+     * Максимальная скорость пули
+     */
+    public static final float MAX_BULLET_SPEED = 35f;
+
+    /**
      * Ширина игрока
      */
-    public static final float PLAYER_WIDTH = 4f;
+    public static final float PLAYER_WIDTH = 8f;
 
     /**
      * Высота игрока
      */
-    public static final float PLAYER_HEIGHT = 1.16f;
+    public static final float PLAYER_HEIGHT = 2.32f;
 
     /**
      * Координата x центра игрока (точки, вокруг которой игрок поворачивается)
      */
-    public static final float PLAYER_CENTER_X = 1.6f;
+    public static final float PLAYER_CENTER_X = 3.2f;
 
     /**
      * Координата y центра игрока (точки, вокруг которой игрок поворачивается)
      */
-    public static final float PLAYER_CENTER_Y = 0.58f;
+    public static final float PLAYER_CENTER_Y = 1.16f;
 
     /**
      * События, о которых игровая модель оповещает всех заинтересованные стороны

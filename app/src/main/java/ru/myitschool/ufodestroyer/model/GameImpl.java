@@ -1,18 +1,18 @@
 package ru.myitschool.ufodestroyer.model;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+import ru.myitschool.ufodestroyer.model.entities.Bullet;
 import ru.myitschool.ufodestroyer.model.entities.Enemy;
 import ru.myitschool.ufodestroyer.model.entities.GameObject;
 import ru.myitschool.ufodestroyer.model.entities.HasCoordsAndSize;
 import ru.myitschool.ufodestroyer.model.entities.MovingGameObject;
 import ru.myitschool.ufodestroyer.model.entities.Player;
+import ru.myitschool.ufodestroyer.model.math.Vector2F;
 import ru.myitschool.ufodestroyer.model.util.SimpleCoordsAndSize;
 import ru.myitschool.ufodestroyer.model.util.Tools;
 
@@ -41,9 +41,7 @@ public class GameImpl implements Game, PlayerControllerImpl.Owner {
         player.setAngle(90f);
     }
 
-
     private List<GameObject> gameObjects = new ArrayList<>();
-
     {
         gameObjects.add(player);
     }
@@ -51,11 +49,11 @@ public class GameImpl implements Game, PlayerControllerImpl.Owner {
     private List<EventListener> listeners = new ArrayList<>();
 
     private float gameFieldHeight;
-    private final float gameFieldWidth = 20;
+    private final float gameFieldWidth = FIELD_WIDTH;
 
     @Override
     public void setFieldWidthHeightRatio(float width, float height) {
-        gameFieldHeight = 20 * height / width;
+        gameFieldHeight = FIELD_WIDTH * height / width;
     }
 
     @Override
@@ -87,7 +85,22 @@ public class GameImpl implements Game, PlayerControllerImpl.Owner {
      */
     @Override
     public void shoot(float power) {
-        Log.d(GameImpl.class.getName(), "Shoot");
+        double angle = Math.toRadians(player.getAngle());
+        float effectivePlayerWidth = PLAYER_WIDTH - PLAYER_CENTER_X;
+
+        Bullet bullet = new Bullet();
+        bullet.getCoords().set((float) Math.cos(angle) * effectivePlayerWidth,
+                (float) Math.sin(angle) * effectivePlayerWidth);
+
+        Vector2F speed = new Vector2F(bullet.getCoords());
+        speed.normalize().multiply(MAX_BULLET_SPEED * player.getChargingLevel());
+
+        bullet.getVelocity().set(speed);
+
+        for (EventListener listener: listeners)
+            listener.onBulletFired(bullet);
+
+        gameObjects.add(bullet);
     }
 
     @Override

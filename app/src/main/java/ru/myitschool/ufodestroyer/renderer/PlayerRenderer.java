@@ -12,6 +12,7 @@ import android.graphics.PorterDuffXfermode;
 import ru.myitschool.ufodestroyer.model.Game;
 import ru.myitschool.ufodestroyer.model.entities.HasCoordsAndSize;
 import ru.myitschool.ufodestroyer.model.entities.Player;
+import ru.myitschool.ufodestroyer.model.math.Vector2F;
 import ru.myitschool.ufodestroyer.model.util.Tools;
 
 import static ru.myitschool.ufodestroyer.model.util.Tools.gamePointToCanvasPoint;
@@ -50,7 +51,7 @@ public class PlayerRenderer implements Renderer {
         if (!(coordsAndSize instanceof Player))
             throw new IllegalArgumentException("Only Player can be rendered by PlayerRenderer");
         Player player = ((Player) coordsAndSize);
-        PointF point = gamePointToCanvasPoint(coordsAndSize.getCoords(),
+        Vector2F point = gamePointToCanvasPoint(coordsAndSize.getCoords(),
                 canvas.getWidth(), canvas.getHeight());
 
         Matrix matrix = new Matrix();

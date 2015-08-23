@@ -1,23 +1,22 @@
 package ru.myitschool.ufodestroyer.model.util;
 
-import android.graphics.PointF;
-
 import ru.myitschool.ufodestroyer.model.entities.HasCoordsAndSize;
+import ru.myitschool.ufodestroyer.model.math.Vector2F;
 
 /**
  * Простой класс, хранящий координаты и ширину с высоток
  */
 public class SimpleCoordsAndSize implements HasCoordsAndSize {
-    private PointF coords = new PointF();
-    private PointF size = new PointF();
+    private Vector2F coords = new Vector2F();
+    private Vector2F size = new Vector2F();
 
     @Override
-    public PointF getCoords() {
+    public Vector2F getCoords() {
         return coords;
     }
 
     @Override
-    public PointF getSize() {
+    public Vector2F getSize() {
         return size;
     }
 

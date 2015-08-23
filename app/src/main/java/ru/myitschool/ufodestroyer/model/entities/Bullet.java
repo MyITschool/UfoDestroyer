@@ -11,6 +11,6 @@ public class Bullet extends MovingGameObject {
 
     @Override
     protected void adjustVelocity(float elapsedSeconds) {
-        getVelocity().offset(0, - elapsedSeconds * GRAVITY);
+        getVelocity().add(0, - elapsedSeconds * GRAVITY);
     }
 }

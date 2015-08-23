@@ -2,7 +2,7 @@ package ru.myitschool.ufodestroyer.model.entities;
 
 import android.graphics.PointF;
 
-import static java.lang.Math.*;
+import ru.myitschool.ufodestroyer.model.math.Vector2F;
 
 /**
  * Класс врага
@@ -17,7 +17,7 @@ public class Enemy extends MovingGameObject {
         if (timeSinceLastDirectionChange > TIME_BETWEEN_DIRECTION_CHANGES) {
             timeSinceLastDirectionChange -= TIME_BETWEEN_DIRECTION_CHANGES;
 
-            PointF v = getVelocity();
+            Vector2F v = getVelocity();
             v.set(v.x, -v.y);
         }
     }

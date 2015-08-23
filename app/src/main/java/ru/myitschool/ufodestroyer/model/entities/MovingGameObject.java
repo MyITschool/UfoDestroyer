@@ -1,18 +1,18 @@
 package ru.myitschool.ufodestroyer.model.entities;
 
-import android.graphics.PointF;
+import ru.myitschool.ufodestroyer.model.math.Vector2F;
 
 /**
  * Движущийся игровой объект. Хранит также свою скорость, помимо координат и размеров и имеет метод,
  * отвечающий за перерасчет скорости
  */
 public abstract class MovingGameObject extends GameObject {
-    private PointF velocity = new PointF();
+    private Vector2F velocity = new Vector2F();
 
     /**
      * @return Скорость объекта
      */
-    public PointF getVelocity() {
+    public Vector2F getVelocity() {
         return velocity;
     }
 
@@ -30,6 +30,7 @@ public abstract class MovingGameObject extends GameObject {
      */
     public void update(float elapsedSeconds) {
         adjustVelocity(elapsedSeconds);
-        getCoords().offset(velocity.x * elapsedSeconds, velocity.y * elapsedSeconds);
+        Vector2F v = new Vector2F(velocity);
+        getCoords().add(v.multiply(elapsedSeconds));
     }
 }

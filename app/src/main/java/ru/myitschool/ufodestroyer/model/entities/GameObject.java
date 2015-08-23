@@ -1,6 +1,6 @@
 package ru.myitschool.ufodestroyer.model.entities;
 
-import android.graphics.PointF;
+import ru.myitschool.ufodestroyer.model.math.Vector2F;
 
 /**
  * Класс-предок для большинства игровых объектов, таких как пули и противники.
@@ -8,21 +8,21 @@ import android.graphics.PointF;
  * для упрощения рендеринга
  */
 public class GameObject implements HasCoordsAndSize {
-    private PointF coords = new PointF();
-    private PointF size = new PointF();
+    private Vector2F coords = new Vector2F();
+    private Vector2F size = new Vector2F();
     private Object renderingHelper = null;
 
     /**
      * @return Координаты центра объекта
      */
-    public PointF getCoords() {
+    public Vector2F getCoords() {
         return coords;
     }
 
     /**
      * @return Размеры объекта (ширина и высота)
      */
-    public PointF getSize() {
+    public Vector2F getSize() {
         return size;
     }
 

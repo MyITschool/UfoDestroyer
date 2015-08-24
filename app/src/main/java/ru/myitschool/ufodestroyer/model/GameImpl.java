@@ -2,9 +2,11 @@ package ru.myitschool.ufodestroyer.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import ru.myitschool.ufodestroyer.model.entities.Bullet;
 import ru.myitschool.ufodestroyer.model.entities.Enemy;
@@ -25,7 +27,7 @@ public class GameImpl implements Game, PlayerControllerImpl.Owner {
      * Необходимо для того, чтобы быть уверенным, что проверка коллизий произойдет
      * верно
      */
-    private static final float MAX_SECONDS_BETWEEN_UPDATES = 0.1f;
+    private static final float MAX_SECONDS_BETWEEN_UPDATES = 0.01f;
 
     /**
      * Время между появлением врагов, в секундах
@@ -47,6 +49,7 @@ public class GameImpl implements Game, PlayerControllerImpl.Owner {
     }
 
     private List<EventListener> listeners = new ArrayList<>();
+    private int score = 0;
 
     private float gameFieldHeight;
     private final float gameFieldWidth = FIELD_WIDTH;
@@ -109,6 +112,11 @@ public class GameImpl implements Game, PlayerControllerImpl.Owner {
     }
 
     @Override
+    public int getScore() {
+        return score;
+    }
+
+    @Override
     public void update(float elapsedSeconds) {
         playerController.update(elapsedSeconds);
         while (elapsedSeconds > 0) {
@@ -118,13 +126,36 @@ public class GameImpl implements Game, PlayerControllerImpl.Owner {
             else
                 tick = elapsedSeconds;
 
-            //player.setAngle(player.getAngle() + elapsedSeconds * 45f);
-
             calcPositions(tick);
             deleteOffMapObjects();
+            detectCollisions();
             spawnEnemies(tick);
             elapsedSeconds -= tick;
         }
+    }
+
+    /**
+     * Находит столкнувшиеся с врагами пули и уничтожает их, увеличивая счет
+     */
+    private void detectCollisions() {
+        Set<GameObject> toBeDeleted = new HashSet<>();
+
+        // полный перебор - сравнительно неэффективно
+        for (GameObject bullet: gameObjects) {
+            if (bullet instanceof Bullet) {
+                for (GameObject enemy: gameObjects) {
+                    if (enemy instanceof Enemy) {
+                        if (Tools.intersects(bullet, enemy)) {
+                            score++;
+                            toBeDeleted.add(bullet);
+                            toBeDeleted.add(enemy);
+                        }
+                    }
+                }
+            }
+        }
+
+        gameObjects.removeAll(toBeDeleted);
     }
 
     /**

@@ -91,6 +91,14 @@ public class GameRenderer implements Game.EventListener {
         paint.setStyle(Paint.Style.FILL);
     }
 
+    private final Paint scorePaint = new Paint();
+    {
+        scorePaint.setColor(Color.BLACK);
+        scorePaint.setTextSize(30f);
+        scorePaint.setTextAlign(Paint.Align.RIGHT);
+        scorePaint.setAntiAlias(true);
+    }
+
     /**
      * Рисует текущее состояние игры
      * @param canvas канва для рисования на ней текущего состояния игры
@@ -105,6 +113,8 @@ public class GameRenderer implements Game.EventListener {
                 renderer.render(canvas, object);
             }
         }
+
+        canvas.drawText("Очки: " + game.getScore(), canvas.getWidth(), 30f, scorePaint);
     }
 
     @Override

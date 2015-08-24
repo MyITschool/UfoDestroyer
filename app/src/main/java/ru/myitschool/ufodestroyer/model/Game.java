@@ -163,4 +163,9 @@ public interface Game {
      * @return объект контроллер для управления действиями игрока
      */
     PlayerController getPlayerController();
+
+    /**
+     * @return Текущий счет, набранный игроком
+     */
+    int getScore();
 }

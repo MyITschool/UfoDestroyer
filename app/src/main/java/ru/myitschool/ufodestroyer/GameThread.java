@@ -27,6 +27,14 @@ public class GameThread extends Thread {
     private Game game;
     private Resources resources;
     private GameRenderer renderer;
+    private final Paint fpsPaint = new Paint();
+
+    {
+        fpsPaint.setColor(Color.BLACK);
+        fpsPaint.setTextAlign(Paint.Align.LEFT);
+        fpsPaint.setTextSize(30f);
+        fpsPaint.setAntiAlias(true);
+    }
 
     public GameThread(Context context, Game game, SurfaceHolder surfaceHolder, int width, int height) {
         this.surfaceHolder = surfaceHolder;
@@ -78,11 +86,8 @@ public class GameThread extends Thread {
                         if (canvas != null) {
                             try {
                                 renderer.render(canvas);
-                                Paint paint = new Paint();
-                                paint.setColor(Color.BLACK);
-                                paint.setTextAlign(Paint.Align.LEFT);
-                                paint.setTextSize(40f);
-                                canvas.drawText("Fps: " + lastFps, 0, 50, paint);
+
+                                canvas.drawText("Fps: " + lastFps, 0f, 30f, fpsPaint);
                             } finally {
                                 surfaceHolder.unlockCanvasAndPost(canvas);
                             }
